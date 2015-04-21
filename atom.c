@@ -1,4 +1,5 @@
 
+/* USE -lm */
 
 /* Includes - BEGIN */
 #include "atom.h"
@@ -9,6 +10,7 @@
 /* #include "mem.h" */
 #include <stdlib.h>
 #include <stddef.h>
+#include <math.h>
 /* Includes - END */
 
 
@@ -24,6 +26,7 @@ static struct atom {
   size_t len;
   char *str;
 } *buckets[ATOM_BUCKETS];
+static size_t entries = 0.0;
 /* DATA - END */
 
 
@@ -85,6 +88,7 @@ const char *Atom_new( const char *str, size_t len ) {
   p->str[len] = '\0';         /* Null Terminate p->str */
   p->next = buckets[hash];
   buckets[hash] = p;
+  entries++; /* Add 1 to Entry Count */
 
   return p->str;
 }
@@ -120,5 +124,53 @@ const char *Atom_int(long n) {
 
   return Atom_new(s, (str + LONG_STR_LEN) - s);
 }
+
+size_t Atom_length( const char *str ) {
+  struct atom *p;
+  size_t i;
+
+  assert(str);
+  for ( i = 0; i < ATOM_BUCKETS; ++i )
+    for (p = buckets[i]; p; p = p->next)
+      if (p->str == str)
+        return p->len;
+
+  assert(0); /* Checked Runtime Error - Given str isn't a valid Atom */
+  return 0; /* Make Compiler Happy */
+}
 /* Functions - END */
+/* ADDED FUNCTIONS */
+size_t Atom_count() {
+  return (size_t)entries;
+}
+
+size_t Atom_bucket_max() {
+  struct atom *p;
+  size_t i, n;
+
+  n = 0;
+  for( i=0; i < ATOM_BUCKETS; ++i )
+    for( p=buckets[i]; p; p = p->next )
+      ++n;
+
+  return n;
+}
+
+double Atom_std_dev() {
+  size_t i;
+  struct atom *p;
+  double dev = 0.0;
+  double avg = ((double)entries) / ((double)ATOM_BUCKETS);
+  double n;
+
+  for( i=0; i<ATOM_BUCKETS; ++i ) {
+    n = 0.0;
+    for( p=buckets[i]; p; p = p->next )
+      ++n;
+    dev += pow((n-avg), 2.0);
+  }
+
+  return sqrt(dev/((double)entries));
+}
+/* ADDED FUNCTIONS - END */
 

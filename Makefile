@@ -1,7 +1,7 @@
 
 CC = clang
 CFLAGS = -std=c89
-LDFLAGS = 
+LDFLAGS = -lm
 
 
 all: atom
@@ -15,4 +15,4 @@ atom-main.o: atom.h atom-main.c
 	$(CC) -c atom-main.c $(CFLAGS)
 
 atom: atom-main.o atom.o
-	$(CC) -o atom atom-main.o atom.o
+	$(CC) -o atom atom-main.o atom.o $(LDFLAGS)
