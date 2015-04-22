@@ -16,6 +16,11 @@
 
 /* MACROS - BEGIN */
 #define LONG_STR_LEN 43
+#if 0
+#define ATOM_BUCKETS 2039
+#define ATOM_BUCKETS 4096
+#define ATOM_BUCKETS 4093
+#endif
 #define ATOM_BUCKETS 2048
 /* MACROS - END */
 
@@ -57,6 +62,20 @@ unsigned long doHash( const char *str, size_t len ) {
 
   return hash;
 }
+
+#if 0
+/** TODO - REMOVE TEST - Lose-lose */
+unsigned long doHash( const char *str, size_t len ) {
+  size_t i;
+  unsigned long hash;
+
+  for ( i=0; i<len; ++i )
+    hash += str[i];
+
+  return hash;
+}
+#endif
+
 
 const char *Atom_new( const char *str, size_t len ) {
   unsigned long hash;
@@ -142,6 +161,10 @@ size_t Atom_length( const char *str ) {
 /* ADDED FUNCTIONS */
 size_t Atom_count() {
   return (size_t)entries;
+}
+
+size_t Atom_buckets() {
+  return ATOM_BUCKETS;
 }
 
 size_t Atom_bucket_max() {

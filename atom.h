@@ -10,6 +10,7 @@ extern const  char  *Atom_int(long n);
 
 /* Added Functionality */
 extern	      size_t Atom_count();
+extern	      size_t Atom_buckets();
 extern	      size_t Atom_bucket_max();
 extern	      double Atom_std_dev();
 

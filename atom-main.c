@@ -6,6 +6,11 @@
 #include "atom.h"
 
 #define BUF_LEN 50
+#if 0
+#define WORDS_FILE "word-list.txt"
+#define WORDS_FILE "wordsEn.txt"
+#endif
+#define WORDS_FILE "aspell-word-list-en-95.txt"
 
 static int word_count = 0;
 
@@ -44,15 +49,16 @@ void addWords(FILE* inFile) {
 int main(void) {
   FILE *inFile;
 
-  inFile = fopen( "word-list.txt", "r" );
+  inFile = fopen( WORDS_FILE, "r" );
   assert(inFile);
 
   addWords(inFile);
 
+  printf("Number of Buckets:                      %lu\n", Atom_buckets());
   printf("Number of Elements Added:               %d\n", word_count);
   printf("Number of Elements in Atom List:        %lu\n", Atom_count());
   printf("Average Number of Elements Per Bucket:  %g\n", 
-            ((double)Atom_bucket_max())/((double)Atom_count()));
+            ((double)Atom_count())/((double)Atom_buckets()));
   printf("Standard Deviation of Elements/Bucket:  %g\n", Atom_std_dev());
 
   return 0;

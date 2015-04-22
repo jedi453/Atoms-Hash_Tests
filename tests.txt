@@ -1,0 +1,90 @@
+Number of Buckets:                      2048
+Number of Elements Added:               10000
+Number of Elements in Atom List:        10000
+Average Number of Elements Per Bucket:  4.88281
+Standard Deviation of Elements/Bucket:  0.953303
+
+
+
+Number of Buckets:                      2039
+Number of Elements Added:               10000
+Number of Elements in Atom List:        10000
+Average Number of Elements Per Bucket:  4.90436
+Standard Deviation of Elements/Bucket:  1.00997
+
+
+
+Number of Buckets:                      2048
+Number of Elements Added:               109582
+Number of Elements in Atom List:        109582
+Average Number of Elements Per Bucket:  53.5068
+Standard Deviation of Elements/Bucket:  0.974834
+
+
+
+Number of Buckets:                      2039
+Number of Elements Added:               109582
+Number of Elements in Atom List:        109582
+Average Number of Elements Per Bucket:  53.743
+Standard Deviation of Elements/Bucket:  0.974485
+
+
+
+Number of Buckets:                      4096
+Number of Elements Added:               109582
+Number of Elements in Atom List:        109582
+Average Number of Elements Per Bucket:  26.7534
+Standard Deviation of Elements/Bucket:  0.972355
+
+
+
+Number of Buckets:                      4093
+Number of Elements Added:               109582
+Number of Elements in Atom List:        109582
+Average Number of Elements Per Bucket:  26.773
+Standard Deviation of Elements/Bucket:  0.99179
+
+
+
+Number of Buckets:                      4093
+Number of Elements Added:               658478
+Number of Elements in Atom List:        658477
+Average Number of Elements Per Bucket:  160.879
+Standard Deviation of Elements/Bucket:  1.0005
+
+
+
+Number of Buckets:                      4096
+Number of Elements Added:               658478
+Number of Elements in Atom List:        658477
+Average Number of Elements Per Bucket:  160.761
+Standard Deviation of Elements/Bucket:  1.0049
+
+
+BEGIN - LOSELOSE TESTS
+
+Number of Buckets:                      4096
+Number of Elements Added:               658478
+Number of Elements in Atom List:        658477
+Average Number of Elements Per Bucket:  160.761
+Standard Deviation of Elements/Bucket:  23.4636
+Number of Buckets:                      4093
+Number of Elements Added:               658478
+Number of Elements in Atom List:        658477
+Average Number of Elements Per Bucket:  160.879
+Standard Deviation of Elements/Bucket:  23.498
+Number of Buckets:                      2048
+Number of Elements Added:               658478
+Number of Elements in Atom List:        658477
+Average Number of Elements Per Bucket:  321.522
+Standard Deviation of Elements/Bucket:  19.796
+Number of Buckets:                      2039
+Number of Elements Added:               658478
+Number of Elements in Atom List:        658477
+Average Number of Elements Per Bucket:  322.941
+Standard Deviation of Elements/Bucket:  19.7275
+
+END - LOSELOSE TESTS
+
+
+
