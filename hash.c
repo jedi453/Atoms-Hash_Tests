@@ -7,6 +7,8 @@ HASH_TYPE Hash_FNV1A(const char*, size_t);
 HASH_TYPE Hash_LOSE(const char*, size_t);
 unsigned int Hash_MURMUR2(const char*, size_t);
 unsigned int Hash_MURMUR3(const char*, size_t, unsigned int);
+HASH_TYPE Hash_DJB2(const char*, size_t);
+HASH_TYPE Hash_SDBM(const char*, size_t);
 
 #define MURMUR3_SEED 0x93C467E3
 
@@ -16,8 +18,10 @@ HASH_TYPE doHash(const char* str, size_t len) {
   return Hash_LOSE(str, len);
   return Hash_MURMUR2(str, len);
   return Hash_MURMUR3(str, len, MURMUR3_SEED);
-#endif
   return Hash_FNV1A(str, len);
+  return Hash_DJB2(str, len);
+#endif
+  return Hash_SDBM(str, len);
 }
 
 
@@ -188,3 +192,28 @@ unsigned int Hash_MURMUR3(const char* str, size_t len, unsigned int seed) {
 }
 
 /****************** END Murmur3 Hash *******************/
+
+
+/****************** BEGIN DJB2 Hash ******************/
+HASH_TYPE Hash_DJB2(const char *str, size_t len) {
+  HASH_TYPE hash = 5381;
+  size_t i;
+
+  for( i=0; i<len; ++i )
+    hash = ((hash<<5)+hash) + str[i];
+
+  return hash;
+}
+/****************** END DJB2 Hash ******************/
+
+/****************** BEGIN SDBM Hash ******************/
+HASH_TYPE Hash_SDBM(const char* str, size_t len) {
+  HASH_TYPE hash = 0;
+  size_t i;
+
+  for( i=0; i<len; ++i )
+    hash = str[i] + (hash<<6) + (hash<<16) - hash;
+
+  return hash;
+}
+/****************** END SDBM Hash ******************/
