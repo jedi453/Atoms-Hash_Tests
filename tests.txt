@@ -68,16 +68,19 @@ Number of Elements Added:               658478
 Number of Elements in Atom List:        658477
 Average Number of Elements Per Bucket:  160.761
 Standard Deviation of Elements/Bucket:  23.4636
+
 Number of Buckets:                      4093
 Number of Elements Added:               658478
 Number of Elements in Atom List:        658477
 Average Number of Elements Per Bucket:  160.879
 Standard Deviation of Elements/Bucket:  23.498
+
 Number of Buckets:                      2048
 Number of Elements Added:               658478
 Number of Elements in Atom List:        658477
 Average Number of Elements Per Bucket:  321.522
 Standard Deviation of Elements/Bucket:  19.796
+
 Number of Buckets:                      2039
 Number of Elements Added:               658478
 Number of Elements in Atom List:        658477
@@ -88,3 +91,88 @@ END - LOSELOSE TESTS
 
 
 
+BEGIN - MURMUR2 TESTS
+
+Number of Buckets:                      4096
+Number of Elements Added:               658478
+Number of Elements in Atom List:        658477
+Average Number of Elements Per Bucket:  160.761
+Standard Deviation of Elements/Bucket:  0.993499
+
+Number of Buckets:                      4093
+Number of Elements Added:               658478
+Number of Elements in Atom List:        658477
+Average Number of Elements Per Bucket:  160.879
+Standard Deviation of Elements/Bucket:  1.02165
+
+Number of Buckets:                      2048
+Number of Elements Added:               658478
+Number of Elements in Atom List:        658477
+Average Number of Elements Per Bucket:  321.522
+Standard Deviation of Elements/Bucket:  1.00084
+
+Number of Buckets:                      2039
+Number of Elements Added:               658478
+Number of Elements in Atom List:        658477
+Average Number of Elements Per Bucket:  322.941
+Standard Deviation of Elements/Bucket:  1.02968
+
+END - MURMUR2 TESTS
+
+
+BEGIN - MURMUR3 TESTS
+
+Number of Buckets:                      4096
+Number of Elements Added:               658478
+Number of Elements in Atom List:        658477
+Average Number of Elements Per Bucket:  160.761
+Standard Deviation of Elements/Bucket:  1.03915
+
+Number of Buckets:                      4093
+Number of Elements Added:               658478
+Number of Elements in Atom List:        658477
+Average Number of Elements Per Bucket:  160.879
+Standard Deviation of Elements/Bucket:  1.05975
+
+Number of Buckets:                      2048
+Number of Elements Added:               658478
+Number of Elements in Atom List:        658477
+Average Number of Elements Per Bucket:  321.522
+Standard Deviation of Elements/Bucket:  1.0285
+
+Number of Buckets:                      2039
+Number of Elements Added:               658478
+Number of Elements in Atom List:        658477
+Average Number of Elements Per Bucket:  322.941
+Standard Deviation of Elements/Bucket:  1.03997
+
+END - MURMUR3 TESTS
+
+
+BEGIN - FNV1A TESTS
+
+Number of Buckets:                      4096
+Number of Elements Added:               658478
+Number of Elements in Atom List:        658477
+Average Number of Elements Per Bucket:  160.761
+Standard Deviation of Elements/Bucket:  0.984818
+
+Number of Buckets:                      4093
+Number of Elements Added:               658478
+Number of Elements in Atom List:        658477
+Average Number of Elements Per Bucket:  160.879
+Standard Deviation of Elements/Bucket:  0.999656
+
+Number of Buckets:                      2048
+Number of Elements Added:               658478
+Number of Elements in Atom List:        658477
+Average Number of Elements Per Bucket:  321.522
+Standard Deviation of Elements/Bucket:  0.977099
+
+Number of Buckets:                      2039
+Number of Elements Added:               658478
+Number of Elements in Atom List:        658477
+Average Number of Elements Per Bucket:  322.941
+Standard Deviation of Elements/Bucket:  0.993357
+
+END - FNV1A TESTS
