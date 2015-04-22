@@ -11,8 +11,15 @@ run: all
 atom.o: atom.h atom.c
 	$(CC) -c atom.c $(CFLAGS)
 
-atom-main.o: atom.h atom-main.c
+hash.o: hash.h hash.c
+	$(CC) -c hash.c $(CFLAGS)
+
+atom-main.o: hash.h atom.h atom-main.c
 	$(CC) -c atom-main.c $(CFLAGS)
 
-atom: atom-main.o atom.o
-	$(CC) -o atom atom-main.o atom.o $(LDFLAGS)
+atom: atom-main.o atom.o hash.o
+	$(CC) -o atom atom-main.o atom.o hash.o $(LDFLAGS)
+
+.PHONY: clean
+clean:
+	rm -f atom atom.o atom-main.o hash.o

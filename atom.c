@@ -3,6 +3,7 @@
 
 /* Includes - BEGIN */
 #include "atom.h"
+#include "hash.h"
 #include "assert.h"
 #include <string.h>
 #include <limits.h>
@@ -17,12 +18,12 @@
 /* MACROS - BEGIN */
 #define LONG_STR_LEN 43
 #if 0
+#define ATOM_BUCKETS 2048
 #define ATOM_BUCKETS 2039
 #define ATOM_BUCKETS 4096
-#define ATOM_BUCKETS 4093
 #endif
-#define ATOM_BUCKETS 2048
 /* MACROS - END */
+#define ATOM_BUCKETS 4093
 
 
 /* DATA - BEGIN */
@@ -35,50 +36,8 @@ static size_t entries = 0.0;
 /* DATA - END */
 
 
-/* Functions - BEGIN */
-/* FNV-1A Hash on Given String of Given Length 
- *  DON'T EXPOSE TO CLIENT! DON'T PUT IN atom.h
- */
-unsigned long doHash( const char *str, size_t len ) {
-  unsigned long hash = 0x811C9DC5UL;
-  unsigned long prime = 0x01000193UL;
-  unsigned char buf;
-  size_t i;
-
-  assert(str); /* Not Necessary - hash() not Provided to Client Code */
-  /* Assume 32-bit unsigned long, but Use 64-bit if Detected */
-  if ( (sizeof(unsigned long)*CHAR_BIT) == 64 ) {
-    hash = 14695981039346656037UL;
-    prime = 0x100000001b3UL;
-  }
-  for ( i=0; i<len; ++i ) {
-    buf = str[i];
-#if CHAR_BIT != 8
-    buf = buf & 0xFF;
-#endif
-    hash ^= buf;
-    hash *= prime;
-  }
-
-  return hash;
-}
-
-#if 0
-/** TODO - REMOVE TEST - Lose-lose */
-unsigned long doHash( const char *str, size_t len ) {
-  size_t i;
-  unsigned long hash;
-
-  for ( i=0; i<len; ++i )
-    hash += str[i];
-
-  return hash;
-}
-#endif
-
-
 const char *Atom_new( const char *str, size_t len ) {
-  unsigned long hash;
+  HASH_TYPE hash;
   size_t i;
   struct atom *p;
 

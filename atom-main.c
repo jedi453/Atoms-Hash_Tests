@@ -5,12 +5,16 @@
 #include <assert.h>
 #include "atom.h"
 
+#include "hash.h"
+#include <string.h>
+
 #define BUF_LEN 50
 #if 0
-#define WORDS_FILE "word-list.txt"
 #define WORDS_FILE "wordsEn.txt"
-#endif
 #define WORDS_FILE "aspell-word-list-en-95.txt"
+#endif
+#define WORDS_FILE "word-list.txt"
+#define DEBUG_HASH_TESTS
 
 static int word_count = 0;
 
@@ -47,7 +51,11 @@ void addWords(FILE* inFile) {
 }
 
 int main(void) {
+  char *strs[] = {  "", "test", "Test", "teSt", "tesT",
+                    "this is a sentence" };
   FILE *inFile;
+  size_t i;
+
 
   inFile = fopen( WORDS_FILE, "r" );
   assert(inFile);
@@ -60,6 +68,14 @@ int main(void) {
   printf("Average Number of Elements Per Bucket:  %g\n", 
             ((double)Atom_count())/((double)Atom_buckets()));
   printf("Standard Deviation of Elements/Bucket:  %g\n", Atom_std_dev());
+
+#ifdef DEBUG_HASH_TESTS
+  /* Test Some Hashes */
+  printf("%20s | %20s:\n", "Text", "Hash");
+  for ( i=0; i < sizeof(strs)/sizeof(char*); ++i ) {
+    printf("%20s | %20lx\n", strs[i], doHash(strs[i], strlen(strs[i])));
+  }
+#endif
 
   return 0;
 }
