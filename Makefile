@@ -1,6 +1,6 @@
 
 CC = clang
-CFLAGS = -std=c89
+CFLAGS = -std=c89 -g
 LDFLAGS = -lm
 
 

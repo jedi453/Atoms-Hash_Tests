@@ -23,7 +23,7 @@
 #define ATOM_BUCKETS 4096
 #define ATOM_BUCKETS 4093
 #endif
-#define ATOM_BUCKETS 4096
+#define ATOM_BUCKETS 4093
 /* MACROS - END */
 
 

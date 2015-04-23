@@ -4,24 +4,32 @@
 #include <limits.h>
 
 HASH_TYPE Hash_FNV1A(const char*, size_t);
+HASH_TYPE Hash_FNV1(const char*, size_t);
 HASH_TYPE Hash_LOSE(const char*, size_t);
 unsigned int Hash_MURMUR2(const char*, size_t);
 unsigned int Hash_MURMUR3(const char*, size_t, unsigned int);
 HASH_TYPE Hash_DJB2(const char*, size_t);
+HASH_TYPE Hash_DJB2A(const char*, size_t);
 HASH_TYPE Hash_SDBM(const char*, size_t);
+HASH_TYPE Hash_KR2(const char*, size_t);
 
 #define MURMUR3_SEED 0x93C467E3
 
 
 HASH_TYPE doHash(const char* str, size_t len) {
 #if 0
-  return Hash_LOSE(str, len);
+  return Hash_LOSE(str, len); /* DONT USE - Very Poor Performance, See tests.txt */
+  return Hash_DJB2(str, len);
+  return Hash_DJB2A(str, len);
+  return Hash_KR2(str, len);
+  return Hash_SDBM(str, len);
+  return Hash_MURMUR2(str, len);
+  return Hash_FNV1A(str, len);
+  return Hash_FNV1(str, len);
   return Hash_MURMUR2(str, len);
   return Hash_MURMUR3(str, len, MURMUR3_SEED);
-  return Hash_FNV1A(str, len);
-  return Hash_DJB2(str, len);
 #endif
-  return Hash_SDBM(str, len);
+  return Hash_KR2(str, len);
 }
 
 
@@ -54,12 +62,41 @@ HASH_TYPE Hash_FNV1A( const char *str, size_t len ) {
   return hash;
 }
 
+/* FNV-1 Hash on Given String of Given Length 
+ */
+HASH_TYPE Hash_FNV1( const char *str, size_t len ) {
+  HASH_TYPE hash = 0x811C9DC5UL;
+  HASH_TYPE prime = 0x01000193UL;
+  unsigned char buf;
+  size_t i;
+
+  assert(str); /* Not Necessary - hash() not Provided to Client Code */
+  /* Assume 32-bit unsigned long, but Use 64-bit if Detected */
+  if ( (sizeof(HASH_TYPE)*CHAR_BIT) == 64 ) {
+    hash = 14695981039346656037UL;
+    prime = 0x100000001b3UL;
+  }
+  for ( i=0; i<len; ++i ) {
+    buf = str[i];
+#if CHAR_BIT != 8
+    buf = buf & 0xFFU;
+#endif
+    hash *= prime;
+    hash ^= buf;
+  }
+
+  return hash;
+}
+
+
+
 /** Lose-Lose - FOR TESTING ONLY - VERY SUCK */
 HASH_TYPE Hash_LOSE( const char *str, size_t len ) {
   size_t i;
-  HASH_TYPE hash = 0;
+  HASH_TYPE hash = 0u;
+  assert(str);
 
-  for ( i=0; i<len; ++i )
+  for ( i=0u; i<len; ++i )
     hash += str[i];
 
   return hash;
@@ -80,9 +117,10 @@ HASH_TYPE Hash_LOSE( const char *str, size_t len ) {
 
 unsigned int Hash_MURMUR2( const char* str, size_t len )
 {
-  assert(sizeof(unsigned int)*CHAR_BIT == 32);
   unsigned int hash;
 
+  assert(sizeof(unsigned int)*CHAR_BIT == 32);
+  assert(str);
   
   /** Set Initial Values */
   hash = MURMUR2_SEED ^ len; /**< Start off with Pseudo-Random Number */
@@ -139,6 +177,8 @@ unsigned int Hash_MURMUR3(const char* str, size_t len, unsigned int seed) {
   const unsigned int* data;
   unsigned int tmp;  /* Temporary Holder for Intermediate Hashing Results */
   size_t wlen = len; /* The Working Length, For Main Loop, Full len Used Later*/
+
+  assert(str);
 
   /* Make Some (Probably Good) Assumptions About Integer Types,
    *  to Avoid Needing stdint.h and C99
@@ -199,6 +239,8 @@ HASH_TYPE Hash_DJB2(const char *str, size_t len) {
   HASH_TYPE hash = 5381;
   size_t i;
 
+  assert(str);
+
   for( i=0; i<len; ++i )
     hash = ((hash<<5)+hash) + str[i];
 
@@ -206,10 +248,27 @@ HASH_TYPE Hash_DJB2(const char *str, size_t len) {
 }
 /****************** END DJB2 Hash ******************/
 
+/****************** BEGIN DJB2A Hash ******************/
+HASH_TYPE Hash_DJB2A(const char *str, size_t len) {
+  HASH_TYPE hash = 5381;
+  size_t i;
+
+  assert(str);
+
+  for( i=0; i<len; ++i )
+    hash = ((hash<<5)+hash) ^ str[i];
+
+  return hash;
+}
+/****************** END DJB2A Hash ******************/
+
+
 /****************** BEGIN SDBM Hash ******************/
 HASH_TYPE Hash_SDBM(const char* str, size_t len) {
   HASH_TYPE hash = 0;
   size_t i;
+
+  assert(str);
 
   for( i=0; i<len; ++i )
     hash = str[i] + (hash<<6) + (hash<<16) - hash;
@@ -217,3 +276,17 @@ HASH_TYPE Hash_SDBM(const char* str, size_t len) {
   return hash;
 }
 /****************** END SDBM Hash ******************/
+
+/****************** BEGIN KR2 Hash ******************/
+HASH_TYPE Hash_KR2(const char *str, size_t len) {
+  HASH_TYPE hash = 0u;
+  size_t i;
+
+  assert(str);
+
+  for ( i=0; i<len; ++i )
+    hash = str[i] + 31*hash;
+
+  return hash;
+}
+/****************** END KR2 Hash ******************/
