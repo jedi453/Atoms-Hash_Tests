@@ -13,10 +13,11 @@
 #define WORDS_FILE "wordsEn.txt"
 #define WORDS_FILE "word-list.txt"
 #define WORDS_FILE "aspell-word-list-en-95.txt"
+#define WORDS_FILE "numbers.txt"
 
 #define DEBUG_HASH_TESTS
 #endif
-#define WORDS_FILE "numbers.txt"
+#define WORDS_FILE "numbers2.txt"
 
 static int word_count = 0;
 

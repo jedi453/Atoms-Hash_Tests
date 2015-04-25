@@ -1,65 +1,25 @@
-Number of Buckets:                      2048
-Number of Elements Added:               10000
-Number of Elements in Atom List:        10000
-Average Number of Elements Per Bucket:  4.88281
-Standard Deviation of Elements/Bucket:  0.953303
-
-
-
-Number of Buckets:                      2039
-Number of Elements Added:               10000
-Number of Elements in Atom List:        10000
-Average Number of Elements Per Bucket:  4.90436
-Standard Deviation of Elements/Bucket:  1.00997
-
-
-
-Number of Buckets:                      2048
-Number of Elements Added:               109582
-Number of Elements in Atom List:        109582
-Average Number of Elements Per Bucket:  53.5068
-Standard Deviation of Elements/Bucket:  0.974834
-
-
-
-Number of Buckets:                      2039
-Number of Elements Added:               109582
-Number of Elements in Atom List:        109582
-Average Number of Elements Per Bucket:  53.743
-Standard Deviation of Elements/Bucket:  0.974485
-
-
-
-Number of Buckets:                      4096
-Number of Elements Added:               109582
-Number of Elements in Atom List:        109582
-Average Number of Elements Per Bucket:  26.7534
-Standard Deviation of Elements/Bucket:  0.972355
-
-
-
-Number of Buckets:                      4093
-Number of Elements Added:               109582
-Number of Elements in Atom List:        109582
-Average Number of Elements Per Bucket:  26.773
-Standard Deviation of Elements/Bucket:  0.99179
-
-
-
-Number of Buckets:                      4093
-Number of Elements Added:               658478
-Number of Elements in Atom List:        658477
-Average Number of Elements Per Bucket:  160.879
-Standard Deviation of Elements/Bucket:  1.0005
-
-
-
-Number of Buckets:                      4096
-Number of Elements Added:               658478
-Number of Elements in Atom List:        658477
-Average Number of Elements Per Bucket:  160.761
-Standard Deviation of Elements/Bucket:  1.0049
-
+NOTES - FNV1A, Murmur2 and Murmur3 Seem to do well in general
+      - SDBM, DJB2, DJB2A Do well for Strings, but some trivial contrieved examples Break them
+        - E.g. Hashing "1" to "658476" and "000000" to "999999"
+        - In cases where these hashes fail, Using a Prime Modulus/Number of Buckets
+          Seems to Greatly Increase usefulness, but I'm not convinced this is always repeatable
+      - In General, Modulus Prime Number seems to be Able to Smooth Over Some Rough Edges
+        of Hash Functions Which Have Issues with Contrieved Examples
+        - Not sure if there's a downside for Always Using this Technique/What it Would Be.
+      - LOSELOSE ( i.e. Hash from K&R1 ) Fails no matter what... Don't Use it!
+      - I Read that Murmur2 and Murmur3 were Broken, Careful with their use
+        - Situations that require any security or peace of mind should probably
+          just use a Cryptographic Hash Function,
+          the Hash Functions Implemented Here may be too simple for their own good.
+      - Theoretically, the closer to zero, the better for Standard Deviations Below,
+        but Around 1 Seems to Indicate Success. 
+        - Must Realize that Without Integer Avg Elements Per Bucket,
+          Standard Deviation can't be 0, but can/should be less than about 1
+      - Standard Deviation of Average vs Actual Elements Per Bucket
+        Might not be a good/fair test, but with enough samples, I would think
+        that Distribution should be as close to even as possible when the
+        hash function does a good job of producing a good pseudo-random hash
+        from its String
 
 BEGIN - LOSELOSE TESTS
 
@@ -384,3 +344,148 @@ BEGIN - HASHING OF INTEGER STRINGS - "1", "2", ... "658476"
   END - KR2 TESTS
 
 END - HASHING OF INTEGER STRINGS - "1", "2", ... "658476"
+
+
+BEGIN - HASHING OF INTEGER STRINGS - "000000", "000001", ... "999999"
+
+  BEGIN - LOSELOSE TESTS
+
+    Number of Buckets:                      4096
+    Number of Elements Added:               1000000
+    Number of Elements in Atom List:        1000000
+    Average Number of Elements Per Bucket:  244.141
+    Standard Deviation of Elements/Bucket:  198.336
+
+    Number of Buckets:                      4093
+    Number of Elements Added:               1000000
+    Number of Elements in Atom List:        1000000
+    Average Number of Elements Per Bucket:  244.32
+    Standard Deviation of Elements/Bucket:  198.335
+
+    Number of Buckets:                      2048
+    Number of Elements Added:               1000000
+    Number of Elements in Atom List:        1000000
+    Average Number of Elements Per Bucket:  488.281
+    Standard Deviation of Elements/Bucket:  197.719
+
+    Number of Buckets:                      2039
+    Number of Elements Added:               1000000
+    Number of Elements in Atom List:        1000000
+    Average Number of Elements Per Bucket:  490.436
+    Standard Deviation of Elements/Bucket:  197.714
+
+  END - LOSELOSE TESTS
+
+  BEGIN - DJB2 TESTS
+
+    Number of Buckets:                      4096
+    Number of Elements Added:               1000000
+    Number of Elements in Atom List:        1000000
+    Average Number of Elements Per Bucket:  244.141
+    Standard Deviation of Elements/Bucket:  8.24752
+
+    Number of Buckets:                      4093
+    Number of Elements Added:               1000000
+    Number of Elements in Atom List:        1000000
+    Average Number of Elements Per Bucket:  244.32
+    Standard Deviation of Elements/Bucket:  0.394287
+
+    Number of Buckets:                      2048
+    Number of Elements Added:               1000000
+    Number of Elements in Atom List:        1000000
+    Average Number of Elements Per Bucket:  488.281
+    Standard Deviation of Elements/Bucket:  11.662
+
+    Number of Buckets:                      2039
+    Number of Elements Added:               1000000
+    Number of Elements in Atom List:        1000000
+    Average Number of Elements Per Bucket:  490.436
+    Standard Deviation of Elements/Bucket:  0.183258
+
+  END - DJB2 TESTS
+
+  BEGIN - DJB2A TESTS
+
+    Number of Buckets:                      4096
+    Number of Elements Added:               1000000
+    Number of Elements in Atom List:        1000000
+    Average Number of Elements Per Bucket:  244.141
+    Standard Deviation of Elements/Bucket:  16.9238
+
+    Number of Buckets:                      4093
+    Number of Elements Added:               1000000
+    Number of Elements in Atom List:        1000000
+    Average Number of Elements Per Bucket:  244.32
+    Standard Deviation of Elements/Bucket:  0.695357
+
+    Number of Buckets:                      2048
+    Number of Elements Added:               1000000
+    Number of Elements in Atom List:        1000000
+    Average Number of Elements Per Bucket:  488.281
+    Standard Deviation of Elements/Bucket:  23.9138
+
+    Number of Buckets:                      2039
+    Number of Elements Added:               1000000
+    Number of Elements in Atom List:        1000000
+    Average Number of Elements Per Bucket:  490.436
+    Standard Deviation of Elements/Bucket:  0.673306
+
+  END - DJB2A TESTS
+
+  BEGIN - FNV1 TESTS
+
+    Number of Buckets:                      4096
+    Number of Elements Added:               1000000
+    Number of Elements in Atom List:        1000000
+    Average Number of Elements Per Bucket:  244.141
+    Standard Deviation of Elements/Bucket:  1.15005
+
+    Number of Buckets:                      4093
+    Number of Elements Added:               1000000
+    Number of Elements in Atom List:        1000000
+    Average Number of Elements Per Bucket:  244.32
+    Standard Deviation of Elements/Bucket:  1.00137
+
+    Number of Buckets:                      2048
+    Number of Elements Added:               1000000
+    Number of Elements in Atom List:        1000000
+    Average Number of Elements Per Bucket:  488.281
+    Standard Deviation of Elements/Bucket:  1.40671
+
+    Number of Buckets:                      2039
+    Number of Elements Added:               1000000
+    Number of Elements in Atom List:        1000000
+    Average Number of Elements Per Bucket:  490.436
+    Standard Deviation of Elements/Bucket:  0.938905
+
+  END - FNV1 TESTS
+
+  BEGIN - FNV1A TESTS
+
+    Number of Buckets:                      4096
+    Number of Elements Added:               1000000
+    Number of Elements in Atom List:        1000000
+    Average Number of Elements Per Bucket:  244.141
+    Standard Deviation of Elements/Bucket:  1.06671
+
+    Number of Buckets:                      4093
+    Number of Elements Added:               1000000
+    Number of Elements in Atom List:        1000000
+    Average Number of Elements Per Bucket:  244.32
+    Standard Deviation of Elements/Bucket:  0.941952
+
+    Number of Buckets:                      2048
+    Number of Elements Added:               1000000
+    Number of Elements in Atom List:        1000000
+    Average Number of Elements Per Bucket:  488.281
+    Standard Deviation of Elements/Bucket:  1.26608
+
+    Number of Buckets:                      2039
+    Number of Elements Added:               1000000
+    Number of Elements in Atom List:        1000000
+    Average Number of Elements Per Bucket:  490.436
+    Standard Deviation of Elements/Bucket:  0.91471
+
+  END - FNV1A TESTS
+
+END - HASHING OF INTEGER STRINGS - "000000", "000001", ... "999999"

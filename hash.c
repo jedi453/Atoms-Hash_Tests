@@ -18,7 +18,7 @@ HASH_TYPE Hash_KR2(const char*, size_t);
 
 HASH_TYPE doHash(const char* str, size_t len) {
 #if 0
-  return Hash_LOSE(str, len); /* DONT USE - Very Poor Performance, See tests.txt */
+  return Hash_LOSE(str, len); /* DONT USE - Very Poor Hash, See tests.txt */
   return Hash_DJB2(str, len);
   return Hash_DJB2A(str, len);
   return Hash_KR2(str, len);
@@ -28,8 +28,9 @@ HASH_TYPE doHash(const char* str, size_t len) {
   return Hash_FNV1(str, len);
   return Hash_MURMUR2(str, len);
   return Hash_MURMUR3(str, len, MURMUR3_SEED);
-#endif
   return Hash_KR2(str, len);
+#endif
+  return Hash_FNV1A(str, len);
 }
 
 

@@ -18,12 +18,12 @@
 /* MACROS - BEGIN */
 #define LONG_STR_LEN 43
 #if 0
-#define ATOM_BUCKETS 2048
-#define ATOM_BUCKETS 2039
 #define ATOM_BUCKETS 4096
 #define ATOM_BUCKETS 4093
+#define ATOM_BUCKETS 2048
+#define ATOM_BUCKETS 2039
 #endif
-#define ATOM_BUCKETS 4093
+#define ATOM_BUCKETS 2039
 /* MACROS - END */
 
 
