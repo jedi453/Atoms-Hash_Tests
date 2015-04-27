@@ -14,10 +14,14 @@
 #define WORDS_FILE "word-list.txt"
 #define WORDS_FILE "aspell-word-list-en-95.txt"
 #define WORDS_FILE "numbers.txt"
+#define WORDS_FILE "numbers2.txt"
 
 #define DEBUG_HASH_TESTS
+#define ATOM_TESTS
+#define HASH_STATS_TESTS
 #endif
-#define WORDS_FILE "numbers2.txt"
+#define WORDS_FILE "wordsEn.txt"
+#define HASH_STATS_TESTS
 
 static int word_count = 0;
 
@@ -54,12 +58,19 @@ void addWords(FILE* inFile) {
 }
 
 int main(void) {
+#ifdef DEBUG_HASH_TESTS
   char *strs[] = {  "", "test", "Test", "teSt", "tesT",
                     "this is a sentence", "longans", "whigs" };
-  FILE *inFile;
   size_t i;
+#endif
+  const char* testStr = "This is A Test";
+  const char* str;
+  FILE *inFile;
 
 
+
+#ifdef HASH_STATS_TESTS
+  /* Add Words from File into Atom, then Print Statistics */
   inFile = fopen( WORDS_FILE, "r" );
   assert(inFile);
 
@@ -71,6 +82,15 @@ int main(void) {
   printf("Average Number of Elements Per Bucket:  %g\n", 
             ((double)Atom_count())/((double)Atom_buckets()));
   printf("Standard Deviation of Elements/Bucket:  %g\n", Atom_std_dev());
+#endif
+
+#ifdef ATOM_TESTS
+  str = Atom_string(testStr);
+  printf("Input String: \"%s\", Location: 0x%lx\n", testStr, (size_t)testStr );
+  printf("Atom  String: \"%s\", Location: 0x%lx\n", str, (size_t)str);
+  printf("String Length: %lu\n", strlen(testStr));
+  printf("Atom   Length: %lu\n", Atom_length(str));
+#endif
 
 #ifdef DEBUG_HASH_TESTS
   /* Test Some Hashes */
@@ -79,6 +99,8 @@ int main(void) {
     printf("%20s | %20x\n", strs[i], doHash(strs[i], strlen(strs[i])));
   }
 #endif
+
+
 
   return 0;
 }

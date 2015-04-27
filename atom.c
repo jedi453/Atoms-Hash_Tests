@@ -12,6 +12,8 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <math.h>
+#include <stdio.h>
+#include <stddef.h> /* offsetof */
 /* Includes - END */
 
 
@@ -23,17 +25,19 @@
 #define ATOM_BUCKETS 2048
 #define ATOM_BUCKETS 2039
 #endif
-#define ATOM_BUCKETS 2039
+#define ATOM_BUCKETS 2048
 /* MACROS - END */
 
 
 /* DATA - BEGIN */
+/* MUST EDIT Implementation of Atom_length After Editing this! */
 static struct atom {
   struct atom *next;
   size_t len;
   char *str;
 } *buckets[ATOM_BUCKETS];
-static size_t entries = 0.0;
+static size_t entries = 0UL;
+static size_t maxAtomLen = 0UL;
 /* DATA - END */
 
 
@@ -69,6 +73,8 @@ const char *Atom_new( const char *str, size_t len ) {
   buckets[hash] = p;
   entries++; /* Add 1 to Entry Count */
 
+  if ( len > maxAtomLen )
+    maxAtomLen = len;
   return p->str;
 }
 
@@ -104,18 +110,36 @@ const char *Atom_int(long n) {
   return Atom_new(s, (str + LONG_STR_LEN) - s);
 }
 
+/* Must be Given Actual Atom, not Random String */
 size_t Atom_length( const char *str ) {
-  struct atom *p;
-  size_t i;
+  struct atom *p; 
+  struct atom *theAtom; 
+  HASH_TYPE hash;
 
   assert(str);
-  for ( i = 0; i < ATOM_BUCKETS; ++i )
-    for (p = buckets[i]; p; p = p->next)
-      if (p->str == str)
-        return p->len;
 
-  assert(0); /* Checked Runtime Error - Given str isn't a valid Atom */
-  return 0; /* Make Compiler Happy */
+  /* Magically Get the struct atom* from the const char* */
+  /* p = ((struct atom*)(((char*) str)+1)) - 1; */
+  /* theAtom = (struct atom*)(((char*)str)-sizeof(size_t)-sizeof(struct atom*)); */
+  /* theAtom = (struct atom*)((char*)str+sizeof(p->str)) - 1; */
+  /* theAtom = (struct atom*)((char*)str-sizeof(p->len)); */
+  /* theAtom = (struct atom*)((char*)&str-offsetof(struct atom,str)); */ /* Close, but Need Address of str Within Atom, this just gives address of Copy of Pointer */
+  theAtom = ((struct atom*)str) - 1; /* str in struct Atom Actually Points to Memory Directly After struct Atom's Internals, See Atom_new */
+
+
+  /* Try to Catch Runtime Error / Bad Given Atom */
+  assert(theAtom);
+  assert( theAtom->len <= maxAtomLen );
+
+  hash = doHash( theAtom->str, theAtom->len );
+  hash %= ATOM_BUCKETS;
+  for(p=buckets[ hash ]; p; p = p->next)
+    if (p->str == str) return p->len;
+
+  fprintf(stderr, "RUNTIME ERROR: Atom_length(): Argument 1 Must Be From Atom");
+  assert(0);
+
+  return 0U;
 }
 /* Functions - END */
 /* ADDED FUNCTIONS */

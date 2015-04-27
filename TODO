@@ -1,0 +1,7 @@
+Problem 3.6 from Book, Improve+Finish Atom_length,
+ - Did this By Getting struct atom Containing the char* : 
+   - Started, but Needs a Way to Make Sure the Given String is Actually From an Atom
+   - Idea was to Make Sure Hash Value was Correct with Given str and Derived len,
+      but Need to figure out how to check correct hash.
+      - If check next atom, must Take Modulus Number of Buckets
+Problem 3.7 from Book
