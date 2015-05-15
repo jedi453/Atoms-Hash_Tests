@@ -3,3 +3,4 @@
 *.swo
 atom
 atom-main
+_build
